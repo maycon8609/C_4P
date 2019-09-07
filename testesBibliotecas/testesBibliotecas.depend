@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1567890308 source:/home/maycon/Dev/faculdade/dev_soft_c/testesBibliotecas/calc.c
+	"calc.h"
+
+1567890214 /home/maycon/Dev/faculdade/dev_soft_c/testesBibliotecas/calc.h
+
