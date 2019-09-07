@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1567892384 source:/home/maycon/Dev/faculdade/dev_soft_c/matriz_alunos/func.c
+	"func.h"
+
+1567892358 /home/maycon/Dev/faculdade/dev_soft_c/matriz_alunos/func.h
+
+1567892410 source:/home/maycon/Dev/faculdade/dev_soft_c/matriz_alunos/main.c
+	<stdio.h>
+	<stdlib.h>
+
