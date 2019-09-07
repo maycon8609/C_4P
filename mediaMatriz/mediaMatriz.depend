@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1567870806 source:/home/maycon/Dev/faculdade/dev_soft_c/mediaMatriz/main.c
+	<stdio.h>
+	<stdlib.h>
+
