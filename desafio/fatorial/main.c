@@ -20,13 +20,12 @@ float soma(float n) {
   float total = 1;
   for(int i = 1; i <= n; i++){
     float fat = fatorial(i);
-    printf("%0.2f\n", fat);
     total += (1 / fat);
   }
   return total;
 }
 
 int main() {
-    printf("%d\n", fatorial(3));
-    printf("%0.2f", soma(3));
+    printf("%d\n", fatorial(5));
+    printf("%0.2f", soma(5));
 }
