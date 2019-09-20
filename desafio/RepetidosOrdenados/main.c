@@ -4,7 +4,7 @@
 
 // tam = tamanho inicial do vetor
 int tam;
-int vet[1];
+int vet[100];
 
 // verificar se "a" ja existe no vetor
 bool verificar(int a){
@@ -46,12 +46,11 @@ int input(){
   // TAMANHO DO VETOR
   printf(" DIGITE O TAMANHO DO VETOR \n");
   scanf("%d", &tam);
-  vet[tam];
 
   // ENTRADA DE DADOS DO VETOR
   printf(" DIGITE OS NUMEROS \n");
   for(int i = 0; i < tam; i++){
-      scanf("%d \n", &num);
+      scanf("%d", &num);
       if(!verificar(num) && num > 0){
         vet[i] = num;
       }
