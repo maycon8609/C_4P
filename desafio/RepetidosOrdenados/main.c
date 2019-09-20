@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-// tam = tamanho inicial do vetor, td = tamanho definitivo
+// tam = tamanho inicial do vetor
 int tam;
 int vet[1];
 
