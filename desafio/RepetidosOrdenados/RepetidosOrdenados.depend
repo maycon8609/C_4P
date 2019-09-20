@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1568942340 source:/home/maycon/Dev/faculdade/dev_soft_c/desafio/RepetidosOrdenados/main.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+
