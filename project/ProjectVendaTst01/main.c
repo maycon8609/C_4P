@@ -4,9 +4,7 @@
 typedef struct produtos{
   char codProd[3];
   char nome[40];
-  float precoCompra;
   float precoVenda;
-  float lucro;
 }produtos;
 
 // VETORES
@@ -26,9 +24,7 @@ void abrirArquivos(){
     while(
     (fscanf(fprod, "%s", vetProd[tprod].codProd)) != EOF &&
     (fscanf(fprod, "%s", vetProd[tprod].nome)) != EOF &&
-    (fscanf(fprod, "%f0.2", vetProd[tprod].precoCompra)) != EOF &&
-    (fscanf(fprod, "%f0.2", vetProd[tprod].precoVenda)) != EOF &&
-    (fscanf(fprod, "%f0.2", vetProd[tprod].lucro)) != EOF  ){
+    (fscanf(fprod, "%f0.2", vetProd[tprod].precoVenda)) != EOF){
       tprod++;
     }
     printf(" produtos.txt ABERTO com exito \n");
@@ -37,15 +33,13 @@ void abrirArquivos(){
   }
 }
 
-void salvarAquivos(){
+void salvarArquivos(){
   // Arquivo de produtos
   if(fprod = fopen("produtos.txt", "w")){
     for(int i = 0; i < tprod; i++){
       fprintf(fprod, "%s\n", vetProd[i].codProd);
       fprintf(fprod, "%s\n", vetProd[i].nome);
-      fprintf(fprod, "%f\n", vetProd[i].precoCompra);
       fprintf(fprod, "%f\n", vetProd[i].precoVenda);
-      fprintf(fprod, "%f\n", vetProd[i].lucro);
     }
     fclose(fprod);
     printf(" produtos.txt salvo com sucesso ");
@@ -57,10 +51,6 @@ void salvarAquivos(){
 
 // FUNCOES REFERENTE A PRODUTOS
 
-void lucro(int x){
-  vetProd[x].lucro = vetProd[x].precoVenda - vetProd[x].precoCompra;
-}
-
 void cadastrar(){
   printf(" CODIGO DO PRODUTO ");
   scanf("%s", &vetProd[tprod].codProd);
@@ -68,13 +58,8 @@ void cadastrar(){
   printf(" NOME DO PRODUTO ");
   scanf("%s", &vetProd[tprod].nome);
 
-  printf(" PRECO DE COMPRA ");
-  scanf("%f", &vetProd[tprod].precoCompra);
-
   printf(" PRECO DE VENDA ");
   scanf("%f", vetProd[tprod].precoVenda);
-
-  lucro(tprod);
 
   tprod++;
 }
@@ -111,7 +96,27 @@ void produto(){
 }
 
 // CHAMAR TODAS AS FUNCOES/ MENU PRINCIPAL
-void exec()
+void exec(){
+  int op = 0;
+  abrirArquivos();
+
+  do{
+    printf(" 1- VENDAS | 2- PRODUTOS | 3- FUNCIONARIOS | 0- SAIR ");
+    scanf("%d", &op);
+
+    if(op == 1){
+
+    }else if(op == 2){
+      produto();
+    }else if(op == 3){
+
+    }else if(op != 0){
+      printf(" OPCAO INVALIDA ");
+    }
+  }while(op != 0);
+
+  salvarArquivos();
+}
 
 int main() {
     exec();
