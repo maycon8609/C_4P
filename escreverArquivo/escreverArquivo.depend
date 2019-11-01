@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1571910598 source:/home/maycon/Dev/faculdade/dev_soft_c/escreverArquivo/main.c
+	<stdio.h>
+	<stdlib.h>
+
