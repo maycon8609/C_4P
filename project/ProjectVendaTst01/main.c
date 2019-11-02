@@ -84,6 +84,7 @@ float lucro(){
 }
 
 void cadastrar(){
+
   bool varif = false;
   char nome[40];
 
@@ -91,7 +92,7 @@ void cadastrar(){
   scanf("%s", &nome);
 
   if(!existeProd(nome)){
-    vetProd[tprod].nome = nome;
+    sprintf(vetProd[tprod].nome, "%s", nome);
 
     printf(" PRECO DE COMPRA ");
     scanf("%f", &vetProd[tprod].precoCompra);
@@ -108,6 +109,8 @@ void cadastrar(){
     scanf("%s", &vetProd[tprod].codProd);
 
     tprod++;
+  }else {
+    printf(" PRODUTO JA CADASTRADO \n");
   }
 }
 
@@ -265,6 +268,11 @@ void listar(){
 }
 
 void produto(){
+  /* Limpar a tela do terminal */
+  //printf("\e[H\e[2J");
+  printf("\33[H\33[2J");
+  /* Limpar a tela do terminal */
+
   int op = 0;
 
   do{
@@ -310,6 +318,10 @@ void exec(){
   }while(op != 0);
 
   salvarArquivos();
+}
+
+bool exi(char nome[]){
+  return nome;
 }
 
 int main() {

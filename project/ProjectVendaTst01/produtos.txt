@@ -1,0 +1,14 @@
+
+cafe
+2.00
+3.00
+1.00
+alimento
+caf1arroz
+
+arroz
+1.65
+2.35
+0.70
+alimento
+arr1
