@@ -2,9 +2,9 @@
 #include <stdlib.h>
 
 typedef struct produtos{
-  char codProd[3];
   char nome[40];
   float precoVenda;
+  char codProd[3];
 }produtos;
 
 // VETORES
@@ -21,10 +21,10 @@ FILE *fprod;
 void abrirArquivos(){
   // Arquivo de produtos
   if(fprod = fopen("produtos.txt", "r")){
-    while(
-    (fscanf(fprod, "%s", vetProd[tprod].codProd)) != EOF &&
-    (fscanf(fprod, "%s", vetProd[tprod].nome)) != EOF &&
-    (fscanf(fprod, "%f0.2", vetProd[tprod].precoVenda)) != EOF){
+    while((fscanf(fprod, "%s %f %s",
+            &vetProd[tprod].nome,
+            &vetProd[tprod].precoVenda,
+            &vetProd[tprod].codProd)) != EOF){
       tprod++;
     }
     printf(" produtos.txt ABERTO com exito \n");
@@ -37,9 +37,9 @@ void salvarArquivos(){
   // Arquivo de produtos
   if(fprod = fopen("produtos.txt", "w")){
     for(int i = 0; i < tprod; i++){
-      fprintf(fprod, "%s\n", vetProd[i].codProd);
       fprintf(fprod, "%s\n", vetProd[i].nome);
-      fprintf(fprod, "%f\n", vetProd[i].precoVenda);
+      fprintf(fprod, "%.2f\n", vetProd[i].precoVenda);
+      fprintf(fprod, "%s\n", vetProd[i].codProd);
     }
     fclose(fprod);
     printf(" produtos.txt salvo com sucesso ");
@@ -52,25 +52,80 @@ void salvarArquivos(){
 // FUNCOES REFERENTE A PRODUTOS
 
 void cadastrar(){
-  printf(" CODIGO DO PRODUTO ");
-  scanf("%s", &vetProd[tprod].codProd);
-
   printf(" NOME DO PRODUTO ");
   scanf("%s", &vetProd[tprod].nome);
 
   printf(" PRECO DE VENDA ");
-  scanf("%f", vetProd[tprod].precoVenda);
+  scanf("%f", &vetProd[tprod].precoVenda);
+
+  printf(" CODIGO DO PRODUTO ");
+  scanf("%s", &vetProd[tprod].codProd);
+
+
 
   tprod++;
 }
 
-void buscar(){}
+void buscar(){
+  char nome[30];
+  int verif = 0;
 
-void editar(){}
+  printf(" BUSCAR PRODUTO  ");
+  scanf("%s", &nome);
+
+  for(int i = 0; i < tprod; i++){
+    if(strcmp(nome, vetProd[i].nome) == 0){
+      printf(" NOME   %s\n", vetProd[i].nome);
+      printf(" VALOR  %.2f\n", vetProd[i].precoVenda);
+      printf(" CODIGO %s\n", vetProd[i].codProd);
+      verif = 1;
+      break;
+    }
+  }
+  if(verif == 0){
+     printf(" produto nao encontrado ");
+  }
+}
+
+void editar(){
+  char nome[30];
+  int verif = 0;
+
+  printf(" PRODUTO A SER EDITADO/NOME ");
+  scanf("%s", &nome);
+
+  for(int i = 0; i < tprod; i++){
+    if(strcmp(nome, vetProd[i].nome) == 0){
+      printf(" INFORME NOVOS DADOS ");
+      printf(" NOME ");
+      scanf("%s", &vetProd[i].nome);
+      printf(" PRECO DE VENDA ");
+      scanf("%.2f", &vetProd[i].precoVenda);
+      printf(" CODIGO DO PRODUTO ");
+      scanf("%s", &vetProd[i].codProd);
+      verif = 1;
+      break;
+    }
+  }
+
+  if(verif == 0){
+    printf(" Produto nao encontrado ");
+  }
+}
 
 void excluir(){}
 
-void listar(){}
+void listar(){
+  int cont = 1;
+  for(int i = 0; i < tprod; i++){
+    printf(" PRODUTO %d\n", cont);
+    printf("   Nome   %s\n", vetProd[i].nome);
+    printf("   Preco  %.2f\n", vetProd[i].precoVenda);
+    printf("   Codigo %s\n", vetProd[i].codProd);
+    printf("");
+    cont++;
+  }
+}
 
 void produto(){
   int op = 0;
@@ -82,13 +137,13 @@ void produto(){
     if(op == 1){
       cadastrar();
     }else if(op == 2){
-
+      buscar();
     }else if(op == 3){
-
+      editar();
     }else if(op == 4){
 
     }else if(op == 5){
-
+      listar();
     }else if(op != 0){
       printf(" OPCAO INVALIDA \n");
     }
