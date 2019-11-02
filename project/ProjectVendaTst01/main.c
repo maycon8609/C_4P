@@ -96,11 +96,11 @@ void editar(){
 
   for(int i = 0; i < tprod; i++){
     if(strcmp(nome, vetProd[i].nome) == 0){
-      printf(" INFORME NOVOS DADOS ");
+      printf(" INFORME NOVOS DADOS \n");
       printf(" NOME ");
       scanf("%s", &vetProd[i].nome);
       printf(" PRECO DE VENDA ");
-      scanf("%.2f", &vetProd[i].precoVenda);
+      scanf("%f", &vetProd[i].precoVenda);
       printf(" CODIGO DO PRODUTO ");
       scanf("%s", &vetProd[i].codProd);
       verif = 1;
@@ -113,7 +113,32 @@ void editar(){
   }
 }
 
-void excluir(){}
+/*
+void excluir(){
+  char nome[30];
+  int verif = 0;
+
+  printf(" PRODUTO A SER EXCLUIDO ");
+  scanf("%s", &nome);
+
+  for(int i = 0; i < tprod; i++){
+    if(strcmp(nome, vetProd[i].nome) == 0){
+      strcpy(vetProd[i].nome, vetProd[tprod - 1].nome);
+      strcpy(vetProd[i].precoVenda, vetProd[tprod - 1].precoVenda);
+      strcpy(vetProd[i].codProd, vetProd[tprod - 1].codProd);
+      tprod--;
+      verif = 0;
+      break;
+    }
+  }
+
+  if(verif == 0){
+    printf(" PRODUTO NAO ENCONTRADO ");
+  }else{
+    printf(" PRODUTO EXCLUIDO COM SUCESSO ");
+  }
+}
+*/
 
 void listar(){
   int cont = 1;
@@ -141,7 +166,7 @@ void produto(){
     }else if(op == 3){
       editar();
     }else if(op == 4){
-
+      //excluir();
     }else if(op == 5){
       listar();
     }else if(op != 0){
