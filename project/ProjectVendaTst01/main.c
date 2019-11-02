@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct produtos{
   char nome[40];
@@ -42,14 +43,14 @@ void salvarArquivos(){
       fprintf(fprod, "%s\n", vetProd[i].codProd);
     }
     fclose(fprod);
-    printf(" produtos.txt salvo com sucesso ");
+    printf(" produtos.txt salvo com sucesso \n");
   }else{
-    printf(" erro ao SALVAR produtos.txt ");
+    printf(" erro ao SALVAR produtos.txt \n");
   }
 }
 
 
-// FUNCOES REFERENTE A PRODUTOS
+/* FUNCOES REFERENTE A PRODUTOS */
 
 void cadastrar(){
   printf(" NOME DO PRODUTO ");
@@ -113,7 +114,7 @@ void editar(){
   }
 }
 
-/*
+
 void excluir(){
   char nome[30];
   int verif = 0;
@@ -124,21 +125,21 @@ void excluir(){
   for(int i = 0; i < tprod; i++){
     if(strcmp(nome, vetProd[i].nome) == 0){
       strcpy(vetProd[i].nome, vetProd[tprod - 1].nome);
-      strcpy(vetProd[i].precoVenda, vetProd[tprod - 1].precoVenda);
+      vetProd[i].precoVenda = vetProd[tprod - 1].precoVenda;
       strcpy(vetProd[i].codProd, vetProd[tprod - 1].codProd);
       tprod--;
-      verif = 0;
+      verif = 1;
       break;
     }
   }
 
   if(verif == 0){
-    printf(" PRODUTO NAO ENCONTRADO ");
+    printf(" PRODUTO NAO ENCONTRADO \n");
   }else{
-    printf(" PRODUTO EXCLUIDO COM SUCESSO ");
+    printf(" PRODUTO EXCLUIDO COM SUCESSO \n");
   }
 }
-*/
+
 
 void listar(){
   int cont = 1;
@@ -166,7 +167,7 @@ void produto(){
     }else if(op == 3){
       editar();
     }else if(op == 4){
-      //excluir();
+      excluir();
     }else if(op == 5){
       listar();
     }else if(op != 0){
@@ -174,8 +175,10 @@ void produto(){
     }
   }while(op != 0);
 }
+/* FIM FUNCOES DE PRODUTO */
 
-// CHAMAR TODAS AS FUNCOES/ MENU PRINCIPAL
+
+/* CHAMAR TODAS AS FUNCOES/ MENU PRINCIPAL */
 void exec(){
   int op = 0;
   abrirArquivos();
