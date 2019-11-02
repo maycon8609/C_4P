@@ -4,8 +4,11 @@
 
 typedef struct produtos{
   char nome[40];
+  float precoCompra;
   float precoVenda;
+  float lucro;
   char codProd[3];
+
 }produtos;
 
 // VETORES
@@ -22,9 +25,11 @@ FILE *fprod;
 void abrirArquivos(){
   // Arquivo de produtos
   if(fprod = fopen("produtos.txt", "r")){
-    while((fscanf(fprod, "%s %f %s",
+    while((fscanf(fprod, "%s %f %f %f %s",
             &vetProd[tprod].nome,
+            &vetProd[tprod].precoCompra,
             &vetProd[tprod].precoVenda,
+            &vetProd[tprod].lucro,
             &vetProd[tprod].codProd)) != EOF){
       tprod++;
     }
@@ -39,7 +44,9 @@ void salvarArquivos(){
   if(fprod = fopen("produtos.txt", "w")){
     for(int i = 0; i < tprod; i++){
       fprintf(fprod, "%s\n", vetProd[i].nome);
+      fprintf(fprod, "%.2f\n", vetProd[i].precoCompra);
       fprintf(fprod, "%.2f\n", vetProd[i].precoVenda);
+      fprintf(fprod, "%.2f\n", vetProd[i].lucro);
       fprintf(fprod, "%s\n", vetProd[i].codProd);
     }
     fclose(fprod);
@@ -52,17 +59,24 @@ void salvarArquivos(){
 
 /* FUNCOES REFERENTE A PRODUTOS */
 
+float lucro(){
+  return vetProd[tprod].precoVenda - vetProd[tprod].precoCompra;
+}
+
 void cadastrar(){
   printf(" NOME DO PRODUTO ");
   scanf("%s", &vetProd[tprod].nome);
 
+  printf(" PRECO DE COMPRA ");
+  scanf("%f", &vetProd[tprod].precoCompra);
+
   printf(" PRECO DE VENDA ");
   scanf("%f", &vetProd[tprod].precoVenda);
 
+  vetProd[tprod].lucro = lucro();
+
   printf(" CODIGO DO PRODUTO ");
   scanf("%s", &vetProd[tprod].codProd);
-
-
 
   tprod++;
 }
@@ -76,9 +90,11 @@ void buscar(){
 
   for(int i = 0; i < tprod; i++){
     if(strcmp(nome, vetProd[i].nome) == 0){
-      printf(" NOME   %s\n", vetProd[i].nome);
-      printf(" VALOR  %.2f\n", vetProd[i].precoVenda);
-      printf(" CODIGO %s\n", vetProd[i].codProd);
+      printf(" NOME -------  %s\n", vetProd[i].nome);
+      printf(" VALOR COMPRA  %.2f\n", vetProd[i].precoCompra);
+      printf(" VALOR VENDA - %.2f\n", vetProd[i].precoVenda);
+      printf(" LUCRO ------- %.2f\n", vetProd[i].lucro);
+      printf(" CODIGO ------ %s\n", vetProd[i].codProd);
       verif = 1;
       break;
     }
@@ -97,11 +113,17 @@ void editar(){
 
   for(int i = 0; i < tprod; i++){
     if(strcmp(nome, vetProd[i].nome) == 0){
+
       printf(" INFORME NOVOS DADOS \n");
       printf(" NOME ");
       scanf("%s", &vetProd[i].nome);
+      printf(" PRECO DE COMPRA ");
+      scanf("%f", &vetProd[i].precoCompra);
       printf(" PRECO DE VENDA ");
       scanf("%f", &vetProd[i].precoVenda);
+
+      vetProd[i].lucro = lucro();
+
       printf(" CODIGO DO PRODUTO ");
       scanf("%s", &vetProd[i].codProd);
       verif = 1;
@@ -125,7 +147,9 @@ void excluir(){
   for(int i = 0; i < tprod; i++){
     if(strcmp(nome, vetProd[i].nome) == 0){
       strcpy(vetProd[i].nome, vetProd[tprod - 1].nome);
+      vetProd[i].precoCompra = vetProd[tprod - 1].precoCompra;
       vetProd[i].precoVenda = vetProd[tprod - 1].precoVenda;
+      vetProd[i].lucro = vetProd[tprod - 1].lucro;
       strcpy(vetProd[i].codProd, vetProd[tprod - 1].codProd);
       tprod--;
       verif = 1;
@@ -145,9 +169,11 @@ void listar(){
   int cont = 1;
   for(int i = 0; i < tprod; i++){
     printf(" PRODUTO %d\n", cont);
-    printf("   Nome   %s\n", vetProd[i].nome);
-    printf("   Preco  %.2f\n", vetProd[i].precoVenda);
-    printf("   Codigo %s\n", vetProd[i].codProd);
+    printf("   NOME -------  %s\n", vetProd[i].nome);
+    printf("   VALOR COMPRA  %.2f\n", vetProd[i].precoCompra);
+    printf("   VALOR VENDA - %.2f\n", vetProd[i].precoVenda);
+    printf("   LUCRO ------- %.2f\n", vetProd[i].lucro);
+    printf("   CODIGO ------ %s\n", vetProd[i].codProd);
     printf("");
     cont++;
   }
