@@ -1,0 +1,12 @@
+cafe
+2.00
+3.50
+1.50
+alimento
+caf
+arroz
+2.30
+3.30
+1.00
+alimento
+arz
