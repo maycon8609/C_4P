@@ -182,33 +182,33 @@ void editar(generic vetor[], int tam){
       if(strcmp(code, vetor[i].code) == 0){
         printf(" Informe Novos Dados \n");
         verif = 1;
-        printf("  Nome ---- ");
+        printf("  Nome ------------- ");
         scanf("%s", &vetor[i].nome);
-        printf("  Code ---- ");
+        printf("  Code ------------- ");
         scanf("%s", &vetor[i].code);
 
           if(vetor == vetProd)
-              printf("   Tipo Produto ----- ");
-            else
-              printf("   Cargo ------------ ");
+            printf("  Tipo Produto ----- ");
+          else
+            printf("  Cargo ------------ ");
           scanf("%s", &vetor[i].tipo);
 
           if(vetor == vetProd)
-            printf("   Quantidade ------- ");
+            printf("  Quantidade ------- ");
           else
-            printf("   Horas Mensais ---- ");
+            printf("  Horas Mensais ---- ");
           scanf("%d", &vetor[i].qtd);
 
           if(vetor == vetProd)
-            printf("   Preco de Compra  - ");
+            printf("  Preco de Compra  - ");
           else
-            printf("   Valor Hora ------- ");
+            printf("  Valor Hora ------- ");
           scanf("%f", &vetor[i].valor1);
 
           if(vetor == vetProd)
-            printf("   Preco de Venda --- ");
+            printf("  Preco de Venda --- ");
           else
-            printf("   Valor fixo ------- ");
+            printf("  Valor fixo ------- ");
           scanf("%f", &vetor[i].valor2);
       }
     }
@@ -223,9 +223,9 @@ void exec(){
   list(vetProd, tProd);
   list(vetFunc, tFunc);
   //cadastrar(vetProd, &tProd);
-  buscar(vetFunc, tFunc);
   //buscar(vetProd, tProd);
-  //editar(vetFunc, tFunc);
+  editar(vetFunc, tFunc);
+  buscar(vetFunc, tFunc);
   saveFile("produtos.txt", vetProd, tProd, fProd);
   saveFile("funcionarios.txt", vetFunc, tFunc, fFunc);
 }
