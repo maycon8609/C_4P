@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 
 typedef struct generic{
   char code[50];
@@ -39,6 +40,7 @@ void openFile(char arquivo[], generic vetor[], int *tam, FILE *pont){
       (*tam)++;
     }
   }
+  printf(" open \n");
 }
 
 void saveFile(char arquivo[], generic vetor[], int tam, FILE *pont){
@@ -52,6 +54,7 @@ void saveFile(char arquivo[], generic vetor[], int tam, FILE *pont){
       fprintf(pont, "%.2f\n", vetor[i].valor2);
     }
   }
+  printf(" save \n");
 }
 
 // funcoes exclusivas de produtos
@@ -74,17 +77,6 @@ bool exist(char code[], generic vetor[], int tam){
     }
   }
   return false;
-}
-
-void list(generic vetor[], int tam){
-  for(int i = 0; i < tam; i++){
-    printf("%s\n",vetor[i].nome);
-    printf("%s\n",vetor[i].code);
-    printf("%s\n",vetor[i].tipo);
-    printf("%d\n",vetor[i].qtd);
-    printf("%.2f\n",vetor[i].valor1);
-    printf("%.2f\n",vetor[i].valor2);
-  }
 }
 
 void cadastrar(generic vetor[], int *tam){
@@ -110,12 +102,12 @@ void cadastrar(generic vetor[], int *tam){
             printf("   Cargo ------------ ");
         scanf("%s", &vetor[*tam].tipo);
 
-        if(vetor == vetProd)
-          printf("   Quantidade ------- ");
-        else
+        if(vetor == vetProd){
+          vetor[*tam].qtd = 1;
+        }else{
           printf("   Horas Mensais ---- ");
-        scanf("%d", &vetor[*tam].qtd);
-
+          scanf("%d", &vetor[*tam].qtd);
+        }
         if(vetor == vetProd)
           printf("   Preco de Compra  - ");
         else
@@ -145,6 +137,28 @@ void buscar(generic vetor[], int tam){
         printf(" Buscar Funcionario\\Code  ");
 
       scanf("%s", &code);
+
+    for(int i = 0; i < tam; i++){
+      if(strcmp(code, vetor[i].code) == 0){
+        verific = 1;
+          printf("  Nome --------- %s\n", vetor[i].nome);
+          printf("  Code --------- %s\n", vetor[i].code);
+        if(vetor == vetProd){
+        printf("  Tipo Produto - %s\n", vetor[i].tipo);
+        printf("  Preco Venda -- %.2f\n", vetor[i].valor2);
+        }else{
+          printf("  Cargo -------- %s\n", vetor[i].tipo);
+          printf("  Salario ------ %.2f\n", returnSalario(i));
+        }
+      }
+    }
+
+    if(verific == 0)
+      printf("  %s nao encontrado\n", code);
+}
+
+void returnBusca(generic vetor[], int tam, char code[]){
+    int verific = 0;
 
     for(int i = 0; i < tam; i++){
       if(strcmp(code, vetor[i].code) == 0){
@@ -217,16 +231,87 @@ void editar(generic vetor[], int tam){
       printf(" %s nao encontrado ", code);
 }
 
+void excluir(generic vetor[], int *tam){
+  printf("\33[H\33[2J");
+  char code[30];
+  int verif = 0;
+  printf(" Buscar Por Code Para Excluir \n");
+    if(vetor == vetProd)
+      printf(" Code Produto  ");
+    else
+      printf(" Code Funcionario  ");
+    scanf("%s", &code);
+
+  for(int i = 0; i < *tam; i++){
+    if(strcmp(code, vetor[i].code) == 0){
+      printf("\33[H\33[2J");
+      printf(" Dados Do Produto \n");
+      returnBusca(vetor, *tam, code);
+        strcpy(vetor[i].code, vetor[*tam - 1].code);
+        strcpy(vetor[i].nome, vetor[*tam - 1].nome);
+        strcpy(vetor[i].tipo, vetor[*tam - 1].tipo);
+         vetor[i].qtd = vetor[*tam - 1].qtd;
+         vetor[i].valor1 = vetor[*tam - 1].valor1;
+         vetor[i].valor2 = vetor[*tam - 1].valor2;
+        (*tam)--;
+        verif = 1;
+        printf(" %s excluido \n", code);
+      printf("\n");
+        break;
+    }
+  }
+
+  if(verif == 0){
+    printf(" %s nao cadastrado\n", code);
+  }
+}
+
+void list(generic vetor[], int tam){
+  int cont = 1;
+  for(int i = 0; i < tam; i++){
+    if(vetor == vetProd)
+      printf(" Produto %d\n", cont);
+    else
+      printf(" Funcionario %d\n", cont);
+
+    printf("  Nome ------------- %s\n",vetor[i].nome);
+    printf("  Code ------------- %s\n",vetor[i].code);
+      if(vetor == vetProd)
+        printf("  Tipo Produto ----- ");
+      else
+        printf("  Cargo ------------ ");
+      printf("%s\n", vetor[i].tipo);
+
+      if(vetor == vetFunc){
+        printf("  Horas Mensais ---- %d\n", vetor[i].qtd);
+      }
+      if(vetor == vetProd)
+        printf("  Preco de Compra  - ");
+      else
+        printf("  Valor Hora ------- ");
+      printf("%.2f\n", vetor[i].valor1);
+
+      if(vetor == vetProd){
+        printf("  Preco de Venda --- ");
+        printf("%.2f\n", vetor[i].valor2);
+      }else{
+        printf("  Valor fixo ------- ");
+        printf("%.2f\n", vetor[i].valor2);
+        printf("  Salario Final ---- %.2f", returnSalario(i));
+      }
+      printf("\n");
+      cont++;
+  }
+}
+
+
 void exec(){
-  openFile("produtos.txt", vetProd, &tProd, fProd);
+  //openFile("produtos.txt", vetProd, &tProd, fProd);
   openFile("funcionarios.txt", vetFunc, &tFunc, fFunc);
-  list(vetProd, tProd);
+  //list(vetProd, tProd);
+  //cadastrar(vetFunc, &tFunc);
   list(vetFunc, tFunc);
-  //cadastrar(vetProd, &tProd);
-  //buscar(vetProd, tProd);
-  editar(vetFunc, tFunc);
-  buscar(vetFunc, tFunc);
-  saveFile("produtos.txt", vetProd, tProd, fProd);
+  //saveFile("produtos.txt", vetProd, tProd, fProd);
   saveFile("funcionarios.txt", vetFunc, tFunc, fFunc);
 }
 
