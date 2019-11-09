@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1573254587 source:/home/maycon/Dev/faculdade/dev_soft_c/project/vendas/main.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+

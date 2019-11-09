@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1573169338 source:/home/maycon/Dev/faculdade/dev_soft_c/maratonaav2/quest11/main.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+
