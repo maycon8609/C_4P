@@ -40,7 +40,6 @@ void openFile(char arquivo[], generic vetor[], int *tam, FILE *pont){
       (*tam)++;
     }
   }
-  printf(" open \n");
 }
 
 void saveFile(char arquivo[], generic vetor[], int tam, FILE *pont){
@@ -54,7 +53,6 @@ void saveFile(char arquivo[], generic vetor[], int tam, FILE *pont){
       fprintf(pont, "%.2f\n", vetor[i].valor2);
     }
   }
-  printf(" save \n");
 }
 
 // funcoes exclusivas de produtos
@@ -141,6 +139,7 @@ void buscar(generic vetor[], int tam){
     for(int i = 0; i < tam; i++){
       if(strcmp(code, vetor[i].code) == 0){
         verific = 1;
+        printf("\n");
           printf("  Nome --------- %s\n", vetor[i].nome);
           printf("  Code --------- %s\n", vetor[i].code);
         if(vetor == vetProd){
@@ -152,12 +151,12 @@ void buscar(generic vetor[], int tam){
         }
       }
     }
-
+    printf("\n");
     if(verific == 0)
       printf("  %s nao encontrado\n", code);
 }
 
-void returnBusca(generic vetor[], int tam, char code[]){
+void buscaRapida(generic vetor[], int tam, char code[]){
     int verific = 0;
 
     for(int i = 0; i < tam; i++){
@@ -172,6 +171,7 @@ void returnBusca(generic vetor[], int tam, char code[]){
           printf("  Cargo -------- %s\n", vetor[i].tipo);
           printf("  Salario ------ %.2f\n", returnSalario(i));
         }
+        break;
       }
     }
 
@@ -194,6 +194,8 @@ void editar(generic vetor[], int tam){
 
     for(int i = 0; i < tam; i++){
       if(strcmp(code, vetor[i].code) == 0){
+        buscaRapida(vetor, tam, code);
+        printf("\n");
         printf(" Informe Novos Dados \n");
         verif = 1;
         printf("  Nome ------------- ");
@@ -245,8 +247,8 @@ void excluir(generic vetor[], int *tam){
   for(int i = 0; i < *tam; i++){
     if(strcmp(code, vetor[i].code) == 0){
       printf("\33[H\33[2J");
-      printf(" Dados Do Produto \n");
-      returnBusca(vetor, *tam, code);
+      printf(" Dados Excluidos \n");
+      buscaRapida(vetor, *tam, code);
         strcpy(vetor[i].code, vetor[*tam - 1].code);
         strcpy(vetor[i].nome, vetor[*tam - 1].nome);
         strcpy(vetor[i].tipo, vetor[*tam - 1].tipo);
@@ -266,7 +268,31 @@ void excluir(generic vetor[], int *tam){
   }
 }
 
+
+void listTipo(generic vetor[], int tam){
+  printf("\33[H\33[2J");
+
+  char tipo[20];
+  int cont = 1;
+  printf(" DIGITE O TIPO A SER LISTADO ");
+  scanf("%s", &tipo);
+
+  for(int i = 0; i < tam; i++){
+    if(strcmp(tipo, vetor[i].tipo) == 0){
+      printf(" PRODUTO %d\n", cont);
+      printf("   NOME -------  %s\n", vetProd[i].nome);
+      printf("   TIPO PRODUTO  %s\n", vetProd[i].tipo);
+      printf("   CODIGO ------ %s\n", vetProd[i].code);
+      printf("   VALOR VENDA - %.2f\n", vetProd[i].valor2);
+      printf("\n");
+      cont++;
+    }
+  }
+
+}
+
 void list(generic vetor[], int tam){
+  printf("\33[H\33[2J");
   int cont = 1;
   for(int i = 0; i < tam; i++){
     if(vetor == vetProd)
@@ -300,18 +326,98 @@ void list(generic vetor[], int tam){
         printf("  Salario Final ---- %.2f", returnSalario(i));
       }
       printf("\n");
+      printf("\n");
       cont++;
   }
+
+  if(vetor == vetProd){
+    int op = 0;
+    do{
+      printf(" 1- listar por tipo | 2- listagem geral | 0- sair  ");
+      scanf("%d", &op);
+      if(op == 1){
+        listTipo(vetProd, tProd);
+      }else if(op == 2){
+        list(vetProd, tProd);
+      }else if(op != 0){
+        printf(" opcao invalida \n");
+      }
+    }while(op != 0);
+    printf("\33[H\33[2J");
+  }
+}
+
+// menu de produto
+void produtos(){
+  printf("\33[H\33[2J");
+  int op = 0;
+  do{
+    printf(" 1- CADASTRAR | 2- BUSCAR | 3- EDITAR | 4- EXCLUIR | 5- LISTAR | 0- SAIR ");
+    scanf("%d", &op);
+
+    if(op == 1){
+      cadastrar(vetProd, &tProd);
+    }else if(op == 2){
+      buscar(vetProd, tProd);
+    }else if(op == 3){
+      editar(vetProd, tProd);
+    }else if(op == 4){
+      excluir(vetProd, &tProd);
+    }else if(op == 5){
+      list(vetProd, tProd);
+    }else if(op != 0){
+      printf(" OPCAO INVALIDA \n");
+    }
+  }while(op != 0);
+  printf("\33[H\33[2J");
+}
+
+// menu de funcionario
+void funcionarios(){
+  printf("\33[H\33[2J");
+  int op = 0;
+  do{
+    printf(" 1- CADASTRAR | 2- BUSCAR | 3- EDITAR | 4- EXCLUIR | 5- LISTAR | 0- SAIR ");
+    scanf("%d", &op);
+
+    if(op == 1){
+      cadastrar(vetFunc, &tFunc);
+    }else if(op == 2){
+      buscar(vetFunc, tFunc);
+    }else if(op == 3){
+      editar(vetFunc, tFunc);
+    }else if(op == 4){
+      excluir(vetFunc, &tFunc);
+    }else if(op == 5){
+      list(vetFunc, tFunc);
+    }else if(op != 0){
+      printf(" OPCAO INVALIDA \n");
+    }
+  }while(op != 0);
+  printf("\33[H\33[2J");
 }
 
 
 void exec(){
-  //openFile("produtos.txt", vetProd, &tProd, fProd);
+  int op = 0;
+  openFile("produtos.txt", vetProd, &tProd, fProd);
   openFile("funcionarios.txt", vetFunc, &tFunc, fFunc);
-  //list(vetProd, tProd);
-  //cadastrar(vetFunc, &tFunc);
-  list(vetFunc, tFunc);
-  //saveFile("produtos.txt", vetProd, tProd, fProd);
+
+  do{
+    printf(" 1- VENDAS | 2- PRODUTOS | 3- FUNCIONARIOS | 0- SAIR ");
+    scanf("%d", &op);
+    if(op == 1){
+      printf(" Em Producao \n");
+    }else if(op == 2){
+      produtos();
+    }else if(op == 3){
+      funcionarios();
+    }else if(op != 0){
+      printf(" OPCAO INVALIDA ");
+    }
+  }while(op != 0);
+
+  saveFile("produtos.txt", vetProd, tProd, fProd);
   saveFile("funcionarios.txt", vetFunc, tFunc, fFunc);
 }
 
