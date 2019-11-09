@@ -38,7 +38,6 @@ void openFile(char arquivo[], generic vetor[], int *tam, FILE *pont){
             &vetor[*tam].valor2)) != EOF){
       (*tam)++;
     }
-    printf("%d sucesso... \n",*tam);
   }
 }
 
@@ -52,7 +51,6 @@ void saveFile(char arquivo[], generic vetor[], int tam, FILE *pont){
       fprintf(pont, "%.2f\n", vetor[i].valor1);
       fprintf(pont, "%.2f\n", vetor[i].valor2);
     }
-    printf(" save... ");
   }
 }
 
@@ -63,7 +61,9 @@ float lucroProd(int pos){
 
 
 // funcoes exclusivas de funcionarios
-
+float returnSalario(int ind){
+  return (vetFunc[ind].qtd * vetFunc[ind].valor1) + vetFunc[ind].valor2;
+}
 
 // funcoes gerais produtos, funcionarios & vendas
 bool exist(char code[], generic vetor[], int tam){
@@ -114,21 +114,18 @@ void cadastrar(generic vetor[], int *tam){
           printf("   Quantidade ------- ");
         else
           printf("   Horas Mensais ---- ");
-
         scanf("%d", &vetor[*tam].qtd);
 
         if(vetor == vetProd)
           printf("   Preco de Compra  - ");
         else
           printf("   Valor Hora ------- ");
-
         scanf("%f", &vetor[*tam].valor1);
 
         if(vetor == vetProd)
           printf("   Preco de Venda --- ");
         else
           printf("   Valor fixo ------- ");
-
         scanf("%f", &vetor[*tam].valor2);
 
       (*tam)++;
@@ -140,17 +137,97 @@ void cadastrar(generic vetor[], int *tam){
 void buscar(generic vetor[], int tam){
     printf("\33[H\33[2J");
     int verific = 0;
-    char
+    char code[50];
+
+      if(vetor == vetProd)
+        printf(" Buscar Produto\\Code  ");
+      else
+        printf(" Buscar Funcionario\\Code  ");
+
+      scanf("%s", &code);
+
+    for(int i = 0; i < tam; i++){
+      if(strcmp(code, vetor[i].code) == 0){
+        verific = 1;
+          printf("  Nome --------- %s\n", vetor[i].nome);
+          printf("  Code --------- %s\n", vetor[i].code);
+        if(vetor == vetProd){
+        printf("  Tipo Produto - %s\n", vetor[i].tipo);
+        printf("  Preco Venda -- %.2f\n", vetor[i].valor2);
+        }else{
+          printf("  Cargo -------- %s\n", vetor[i].tipo);
+          printf("  Salario ------ %.2f\n", returnSalario(i));
+        }
+      }
+    }
+
+    if(verific == 0)
+      printf("  %s nao encontrado\n", code);
 }
 
 
+void editar(generic vetor[], int tam){
+  printf("\33[H\33[2J");
+  char code[30];
+  int verif = 0;
+
+      if(vetor == vetProd)
+        printf(" Editar Produto \n");
+      else
+        printf(" Editar Funcionario \n");
+      printf(" Digitar Code  ");
+      scanf("%s", &code);
+
+    for(int i = 0; i < tam; i++){
+      if(strcmp(code, vetor[i].code) == 0){
+        printf(" Informe Novos Dados \n");
+        verif = 1;
+        printf("  Nome ---- ");
+        scanf("%s", &vetor[i].nome);
+        printf("  Code ---- ");
+        scanf("%s", &vetor[i].code);
+
+          if(vetor == vetProd)
+              printf("   Tipo Produto ----- ");
+            else
+              printf("   Cargo ------------ ");
+          scanf("%s", &vetor[i].tipo);
+
+          if(vetor == vetProd)
+            printf("   Quantidade ------- ");
+          else
+            printf("   Horas Mensais ---- ");
+          scanf("%d", &vetor[i].qtd);
+
+          if(vetor == vetProd)
+            printf("   Preco de Compra  - ");
+          else
+            printf("   Valor Hora ------- ");
+          scanf("%f", &vetor[i].valor1);
+
+          if(vetor == vetProd)
+            printf("   Preco de Venda --- ");
+          else
+            printf("   Valor fixo ------- ");
+          scanf("%f", &vetor[i].valor2);
+      }
+    }
+
+    if(verif == 0)
+      printf(" %s nao encontrado ", code);
+}
+
 void exec(){
   openFile("produtos.txt", vetProd, &tProd, fProd);
-  //openFile("funcionarios.txt", vetFunc, &tFunc, fFunc);
+  openFile("funcionarios.txt", vetFunc, &tFunc, fFunc);
   list(vetProd, tProd);
-  //cadastrar(vetFunc, &tFunc);
+  list(vetFunc, tFunc);
+  //cadastrar(vetProd, &tProd);
+  buscar(vetFunc, tFunc);
+  //buscar(vetProd, tProd);
+  //editar(vetFunc, tFunc);
   saveFile("produtos.txt", vetProd, tProd, fProd);
-  //saveFile("funcionarios.txt", vetFunc, tFunc, fFunc);
+  saveFile("funcionarios.txt", vetFunc, tFunc, fFunc);
 }
 
 int main() {

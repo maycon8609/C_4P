@@ -1,9 +1,9 @@
 sabao
 sab1
-liquido
+limpeza
 1
-1.00
-2.35
+1.10
+2.50
 cafe
 caf1
 alimento
@@ -16,3 +16,9 @@ alimento
 1
 0.80
 1.50
+macarrao
+mac1
+alimento
+1
+1.35
+2.15
