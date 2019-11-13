@@ -138,10 +138,12 @@ void lancCar(){
     strcpy(vetVend[tVend].nome, vetCar[i].nome);
     strcpy(vetVend[tVend].tipo, vetCar[i].tipo);
     vetVend[tVend].qtd = vetCar[i].qtd;
-    qtd = vetCar[i].qtd;
-    strcpy(code, vetCar[i].nome);
-    vetVend[tVend].valor1 = valorUni(code);
-    vetVend[tVend].valor2 = totalUni(qtd, code);
+    //qtd = vetCar[i].qtd;
+    //strcpy(code, vetCar[i].nome);
+    //vetVend[tVend].valor1 = valorUni(code);
+    //vetVend[tVend].valor2 = totalUni(qtd, code);
+    vetVend[tVend].valor1 = vetCar[i].valor1;
+    vetVend[tVend].valor2 = vetCar[i].valor2;
     tVend++;
   }
 }
