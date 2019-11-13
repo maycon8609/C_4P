@@ -22,6 +22,9 @@ int tFunc = 0;
 generic vetVend[500];
 int tVend = 0;
 
+generic vetCar[500];
+int tCar = 0;
+
 // ponteiros
 FILE *fProd;
 FILE *fFunc;
@@ -60,6 +63,67 @@ float lucroProd(int pos){
   return vetProd[pos].valor2 - vetProd[pos].valor1;
 }
 
+// funcoes exclusivas de venda
+float valorUni(char code[]){
+  for(int i = 0; i < tProd; i++){
+    if(strcmp(code, vetProd[i].code) == 0){
+      return vetProd[i].valor2;
+      break;
+    }
+  }
+  return 888;
+}
+
+float totalUni(int qtd, char code[]){
+  for(int i = 0; i < tProd; i++){
+    if(strcmp(code, vetProd[i].code) == 0){
+      return qtd * vetProd[i].valor2;
+      break;
+    }
+  }
+  return 999;
+}
+
+void addCar(char code[], int qtd){
+  printf(" addCar \n");
+  for(int i = 0; i < tProd; i++){
+    if(strcmp(code, vetProd[i].code) == 0){
+      strcpy(vetCar[tCar].code, vetProd[i].code);
+      strcpy(vetCar[tCar].nome, vetProd[i].nome);
+      strcpy(vetCar[tCar].tipo, vetProd[i].tipo);
+      vetCar[tCar].qtd = qtd;
+      vetCar[tCar].valor1 = vetProd[i].valor2;
+      vetCar[tCar].valor2 = totalUni(qtd, code);
+      tCar++;
+      break;
+    }
+  }
+}
+
+void listCar(){
+  printf("\33[H\33[2J");
+  printf(" list \n");
+  int cont = 1;
+  for(int i = 0; i < tCar; i++){
+    printf(" Produto %d\n", cont);
+    printf("  Nome -------- %s\n", vetCar[i].nome);
+    printf("  Qtd --------- %d\n", vetCar[i].qtd);
+    printf("  Valor Unid -- %.2f\n", vetCar[i].valor1);
+    printf("  Valor Total - %.2f\n", vetCar[i].valor2);
+    printf("\n");
+    cont++;
+  }
+}
+
+void inCar(char code[], int qtd){
+  printf(" inCar \n");
+  for(int i = 0; i < tCar; i++){
+    if(strcmp(code, vetCar[i].code) == 0){
+      vetCar[i].qtd += qtd;
+      vetCar[i].valor2 += totalUni(qtd, code);
+    }
+  }
+}
 
 // funcoes exclusivas de funcionarios
 float returnSalario(int ind){
@@ -372,6 +436,54 @@ void produtos(){
   printf("\33[H\33[2J");
 }
 
+// vendas
+void vendas(){
+  printf("\33[H\33[2J");
+  char fcode[30], pcode[30];
+  int next = 0, qtd = 0;
+
+  printf(" Nova Venda \n");
+  printf(" Code Funcionario  ");
+  scanf("%s", &fcode);
+  if(exist(fcode, vetFunc, tFunc)){
+      do{
+        strcpy(vetVend[tVend].nome, fcode);
+
+        printf(" Code Produto  ");
+        scanf("%s", &pcode);
+        if(exist(pcode, vetProd, tProd)){
+          strcpy(vetVend[tVend].code, pcode);
+          strcpy(vetVend[tVend].tipo, "venda");
+
+          printf(" Quantidade  ");
+          scanf("%d", &qtd);
+          vetVend[tVend].qtd = qtd;
+
+          vetVend[tVend].valor1 = valorUni(pcode);
+          vetVend[tVend].valor2 = totalUni(qtd, pcode);
+          tVend++;
+
+          if(!exist(pcode, vetCar, tCar)){
+            printf(" true 111 \n");
+            addCar(pcode, qtd);
+          }else{
+            printf(" false 222 \n");
+            inCar(pcode, qtd);
+          }
+          listCar();
+        }else{
+          printf(" Produto Nao Cadastrado \n");
+        }
+
+        printf(" 1- continuar | 0- sair  ");
+        scanf("%d", &next);
+      }while(next != 0);
+  }else{
+    printf(" Funcionario Nao Cadastrado \n");
+  }
+}
+
+
 // menu de funcionario
 void funcionarios(){
   printf("\33[H\33[2J");
@@ -402,12 +514,13 @@ void exec(){
   int op = 0;
   openFile("produtos.txt", vetProd, &tProd, fProd);
   openFile("funcionarios.txt", vetFunc, &tFunc, fFunc);
+  openFile("vendas.txt", vetVend, &tVend, fVend);
 
   do{
     printf(" 1- VENDAS | 2- PRODUTOS | 3- FUNCIONARIOS | 0- SAIR ");
     scanf("%d", &op);
     if(op == 1){
-      printf(" Em Producao \n");
+      vendas();
     }else if(op == 2){
       produtos();
     }else if(op == 3){
@@ -419,6 +532,7 @@ void exec(){
 
   saveFile("produtos.txt", vetProd, tProd, fProd);
   saveFile("funcionarios.txt", vetFunc, tFunc, fFunc);
+  saveFile("vendas.txt", vetVend, tVend, fVend);
 }
 
 int main() {
