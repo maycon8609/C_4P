@@ -84,17 +84,16 @@ float totalUni(int qtd, char code[]){
   return 999;
 }
 
-void addCar(char code[], int qtd){
+void addCar(char fcode[], char code[], int qtd){
   printf(" addCar \n");
   for(int i = 0; i < tProd; i++){
     if(strcmp(code, vetProd[i].code) == 0){
-      strcpy(vetCar[tCar].code, vetProd[i].code);
-      strcpy(vetCar[tCar].nome, vetProd[i].nome);
+      strcpy(vetCar[tCar].code, code);
+      strcpy(vetCar[tCar].nome, fcode);
       strcpy(vetCar[tCar].tipo, vetProd[i].tipo);
       vetCar[tCar].qtd = qtd;
-      vetCar[tCar].valor1 = vetProd[i].valor2;
+      vetCar[tCar].valor1 = valorUni(code);
       vetCar[tCar].valor2 = totalUni(qtd, code);
-      tCar++;
       break;
     }
   }
@@ -106,7 +105,7 @@ void listCar(){
   int cont = 1;
   for(int i = 0; i < tCar; i++){
     printf(" Produto %d\n", cont);
-    printf("  Nome -------- %s\n", vetCar[i].nome);
+    printf("  Code Produto  %s\n", vetCar[i].code);
     printf("  Qtd --------- %d\n", vetCar[i].qtd);
     printf("  Valor Unid -- %.2f\n", vetCar[i].valor1);
     printf("  Valor Total - %.2f\n", vetCar[i].valor2);
@@ -117,13 +116,36 @@ void listCar(){
 
 void inCar(char code[], int qtd){
   printf(" inCar \n");
+  int verif = 0;
   for(int i = 0; i < tCar; i++){
     if(strcmp(code, vetCar[i].code) == 0){
       vetCar[i].qtd += qtd;
       vetCar[i].valor2 += totalUni(qtd, code);
+      verif = 1;
+      break;
     }
   }
+  if(verif == 0){
+    printf(" %s nao cadastrado ", code);
+  }
 }
+
+void lancCar(){
+  int qtd = 0;
+  char code[50];
+  for(int i = 0; i < tCar; i++){
+    strcpy(vetVend[tVend].code, vetCar[i].code);
+    strcpy(vetVend[tVend].nome, vetCar[i].nome);
+    strcpy(vetVend[tVend].tipo, vetCar[i].tipo);
+    vetVend[tVend].qtd = vetCar[i].qtd;
+    qtd = vetCar[i].qtd;
+    strcpy(code, vetCar[i].nome);
+    vetVend[tVend].valor1 = valorUni(code);
+    vetVend[tVend].valor2 = totalUni(qtd, code);
+    tVend++;
+  }
+}
+
 
 // funcoes exclusivas de funcionarios
 float returnSalario(int ind){
@@ -447,37 +469,31 @@ void vendas(){
   scanf("%s", &fcode);
   if(exist(fcode, vetFunc, tFunc)){
       do{
-        strcpy(vetVend[tVend].nome, fcode);
-
         printf(" Code Produto  ");
         scanf("%s", &pcode);
         if(exist(pcode, vetProd, tProd)){
-          strcpy(vetVend[tVend].code, pcode);
-          strcpy(vetVend[tVend].tipo, "venda");
+          //strcpy(vetCar[tCar].code, fcode);
+          //strcpy(vetCar[tCar].tipo, pcode);
 
           printf(" Quantidade  ");
           scanf("%d", &qtd);
-          vetVend[tVend].qtd = qtd;
-
-          vetVend[tVend].valor1 = valorUni(pcode);
-          vetVend[tVend].valor2 = totalUni(qtd, pcode);
-          tVend++;
-
+          //vetCar[tCar].qtd = qtd;
           if(!exist(pcode, vetCar, tCar)){
-            printf(" true 111 \n");
-            addCar(pcode, qtd);
+            addCar(fcode, pcode, qtd);
+            tCar++;
           }else{
-            printf(" false 222 \n");
             inCar(pcode, qtd);
           }
-          listCar();
+
         }else{
-          printf(" Produto Nao Cadastrado \n");
+          printf(" %s nao cadastrado \n", pcode);
         }
 
+        listCar();
         printf(" 1- continuar | 0- sair  ");
         scanf("%d", &next);
       }while(next != 0);
+    lancCar();
   }else{
     printf(" Funcionario Nao Cadastrado \n");
   }
