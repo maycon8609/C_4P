@@ -9,17 +9,17 @@ int raizQ(int n){
     sub += 2;
     cont++;
   }
-  /*if(n == 0){
-    printf(" Raiz exata %d", cont);
+  if(n == 0){
+    printf(" Raiz exata  ");
   }else {
-    printf(" Raiz aproximada %d", cont);
-  }*/
+    printf(" Raiz aproximada  ");
+  }
   return cont;
 }
 
 
 int main() {
-    printf("%d",raizQ(raizQ(81)));
+    printf("%d",raizQ(25));
 
     return 0;
 }
